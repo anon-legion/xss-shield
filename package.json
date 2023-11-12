@@ -1,0 +1,25 @@
+{
+  "name": "xss-shield",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Middleware to sanitize incoming requests",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup package/index.ts --format cjs,esm --minify --dts-resolve --dts --clean --sourcemap",
+    "lint": "eslint . --ext .ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "xss": "^1.0.14"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "eslint": "^8.53.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
+  }
+}
