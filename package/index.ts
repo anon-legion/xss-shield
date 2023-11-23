@@ -1,24 +1,18 @@
-import xss from 'xss';
+import clean from './clean';
+import { Request, Response, NextFunction } from 'express';
+import { ValidKeys } from './types';
 
-interface IReq {
-  body: Record<string, any>;
-  query: Record<string, any>;
-  params: Record<string, any>;
-}
-type ValidData = IReq['body'] | IReq['query'] | IReq['params'] | string;
+function xssSanitizer(keys: ValidKeys[] = []) {
+  return (req: Request, _res: Response, next: NextFunction) => {
+    if (Boolean(req.body) && (keys.includes('body') || keys.length === 0))
+      req.body = clean<Request['body']>(req.body);
+    if (Boolean(req.query) && (keys.includes('query') || keys.length === 0))
+      req.query = clean<Request['query']>(req.query);
+    if (Boolean(req.params) && (keys.includes('params') || keys.length === 0))
+      req.params = clean<Request['params']>(req.params);
 
-function clean<T extends ValidData>(rawData: T): T {
-  let data = '';
-  let isObject = false;
-  if (typeof rawData === 'object') {
-    data = JSON.stringify(rawData);
-    isObject = true;
-  }
-
-  data = xss(data as string).trim();
-  if (isObject) data = JSON.parse(data);
-
-  return data as T;
+    next();
+  };
 }
 
-export default clean;
+export default xssSanitizer;
