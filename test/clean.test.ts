@@ -1,6 +1,6 @@
 import { test } from 'node:test';
-import clean from '../package/clean';
-import assert from 'assert';
+import clean from '../src/clean';
+import assert from 'node:assert';
 
 test('clean function - should clean a string', () => {
   const raw = '<script>alert("xss");</script>';
