@@ -1,9 +1,8 @@
-export interface IReq {
-  body: Record<string, any>;
-  query: Record<string, any>;
-  params: Record<string, any>;
-}
+import * as express from 'express';
 
-export type ValidData = IReq['body'] | IReq['query'] | IReq['params'] | string;
+export type ValidData =
+  | express.Request['body']
+  | express.Request['params']
+  | express.Request['query'];
 
 export type ValidKeys = 'body' | 'params' | 'query';
