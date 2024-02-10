@@ -1,33 +1,55 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
+import { deepStrictEqual } from 'node:assert';
 import clean from '../src/clean';
-import assert from 'node:assert';
 
-test('clean function - should clean a string', () => {
-  const raw = '<script>alert("xss");</script>';
-  const cleaned = clean(raw);
-  assert.deepEqual(cleaned, '');
-});
+describe('clean function', () => {
+  it('should clean a string', () => {
+    const raw = 'Hello, world! <script>alert("xss");</script>';
+    const cleaned = clean(raw);
+    deepStrictEqual(cleaned, 'Hello, world!');
+  });
 
-test('clean function - should clean an object', () => {
-  const raw = { prop: '<script>alert("xss");</script>' };
-  const cleaned = clean(raw);
-  assert.deepEqual(cleaned, { prop: '' });
-});
+  it('should clean an array of strings', () => {
+    const raw = ['Hello, world!', '<script>alert("xss");</script>'];
+    const cleaned = clean(raw);
+    deepStrictEqual(cleaned, ['Hello, world!', '']);
+  });
 
-test('clean function - should clean a nested object', () => {
-  const raw = { prop: { subProp: '<script>alert("xss");</script>' } };
-  const cleaned = clean(raw);
-  assert.deepEqual(cleaned, { prop: { subProp: '' } });
-});
+  it('should clean an array of objects', () => {
+    const raw = [{ prop: 'Hello, world!' }, { prop: '<script>alert("xss");</script>' }];
+    const cleaned = clean(raw);
+    deepStrictEqual(cleaned, [{ prop: 'Hello, world!' }, { prop: '' }]);
+  });
 
-test('clean function - should not modify a clean string', () => {
-  const raw = 'Hello, world!';
-  const cleaned = clean(raw);
-  assert.deepEqual(cleaned, raw);
-});
+  it('should clean a complex nested object', () => {
+    const raw = {
+      prop1: 'Hello, world!',
+      prop2: '<script>alert("xss");</script>',
+      prop3: {
+        subProp1: 'Hello, world!',
+        subProp2: '<script>alert("xss");</script>',
+      },
+    };
+    const cleaned = clean(raw);
+    deepStrictEqual(cleaned, {
+      prop1: 'Hello, world!',
+      prop2: '',
+      prop3: {
+        subProp1: 'Hello, world!',
+        subProp2: '',
+      },
+    });
+  });
 
-test('clean function - should not modify a clean object', () => {
-  const raw = { prop: 'Hello, world!' };
-  const cleaned = clean(raw);
-  assert.deepEqual(cleaned, raw);
+  it('should handle null values', () => {
+    const raw = { prop: null };
+    const cleaned = clean(raw);
+    deepStrictEqual(cleaned, { prop: null });
+  });
+
+  it('should handle undefined values', () => {
+    const raw = { prop: undefined };
+    const cleaned = clean(raw);
+    deepStrictEqual(cleaned, { prop: undefined });
+  });
 });

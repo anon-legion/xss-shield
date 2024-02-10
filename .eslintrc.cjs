@@ -17,4 +17,5 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
   },
+  ignorePatterns: ['node_modules/', 'dist/'],
 };

@@ -1,5 +1,5 @@
 import clean from './clean';
-import * as express from 'express';
+import type * as express from 'express';
 import { ValidKeys } from './types';
 
 function xssSanitizer(keys: ValidKeys[] = []) {

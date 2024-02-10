@@ -8,7 +8,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup src/*.ts --format cjs,esm --minify --dts-resolve --dts --clean --sourcemap",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "test": "node ./test/clean.test.ts --test"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,7 @@
     "eslint-plugin-n": "^16.3.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-security": "^1.7.1",
+    "mocha": "^10.3.0",
     "prettier": "^3.1.0",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
